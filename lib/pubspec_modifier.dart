@@ -24,8 +24,10 @@ void concatPubspecYaml() {
     if (modifiable['flutter']["fonts"] == null) {
       modifiable['flutter']["fonts"] = tenantModifiable['flutter']["fonts"];
     } else {
-      modifiable['flutter']["fonts"]
-          .addAll(tenantModifiable['flutter']["fonts"]);
+      for (var font in tenantModifiable['flutter']["fonts"]) {
+        modifiable['flutter']["fonts"]
+            .add(font);
+      }
     }
   }
 
