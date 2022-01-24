@@ -1,0 +1,11 @@
+flutter:
+  fonts:
+    - family: FontFamily2
+      fonts:
+        - asset: assets/fonts/font2a.ttf
+        - asset: assets/fonts/font2b.ttf
+          style: normal
+    - family: FontFamily3
+      fonts:
+        - asset: assets/fonts/font3.ttf
+          weight: 700
