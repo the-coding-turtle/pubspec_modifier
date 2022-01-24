@@ -18,7 +18,16 @@ void concatPubspecYaml() {
 
   modifiable.putIfAbsent('flutter', () => HashMap());
 
-  modifiable['flutter']["fonts"].addAll(tenantModifiable['flutter']["fonts"]);
+  if (modifiable['flutter'] == null) {
+    modifiable['flutter'] = {"fonts": tenantModifiable['flutter']["fonts"]};
+  } else {
+    if (modifiable['flutter']["fonts"] == null) {
+      modifiable['flutter']["fonts"] = tenantModifiable['flutter']["fonts"];
+    } else {
+      modifiable['flutter']["fonts"]
+          .addAll(tenantModifiable['flutter']["fonts"]);
+    }
+  }
 
   final strYaml = toYamlString(modifiable);
   File("pubspec.yaml").writeAsStringSync(strYaml);
