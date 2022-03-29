@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:yaml_modify/yaml_modify.dart';
 
-void concatPubspecYaml() {
-  File tenantFile = File("tenant_pubspec.yaml");
+void concatPubspecYaml({required String fileName}) {
+  File tenantFile = File("$fileName.yaml");
   if (tenantFile.existsSync() == false) {
     return;
   }
@@ -18,20 +18,25 @@ void concatPubspecYaml() {
 
   modifiable.putIfAbsent('flutter', () => HashMap());
 
-  if (modifiable['flutter'] == null) {
-    modifiable['flutter'] = {"fonts": tenantModifiable['flutter']["fonts"]};
-  } else if (modifiable['flutter']["fonts"] == null) {
-    modifiable['flutter']["fonts"] = tenantModifiable['flutter']["fonts"];
-  } else {
-    for (var font in tenantModifiable['flutter']["fonts"]) {
-      modifiable['flutter']["fonts"].add(font);
+  if (tenantModifiable['flutter'] != null &&
+      tenantModifiable['flutter']["fonts"] != null) {
+    if (modifiable['flutter'] == null) {
+      modifiable['flutter'] = {"fonts": tenantModifiable['flutter']["fonts"]};
+    } else if (modifiable['flutter']["fonts"] == null) {
+      modifiable['flutter']["fonts"] = tenantModifiable['flutter']["fonts"];
+    } else {
+      for (var font in tenantModifiable['flutter']["fonts"]) {
+        modifiable['flutter']["fonts"].add(font);
+      }
     }
   }
+
+  modifiable.removeWhere((key, value) => value == null);
 
   final strYaml = toYamlString(modifiable);
   File("pubspec.yaml").writeAsStringSync(strYaml);
 }
 
 exec() {
-  concatPubspecYaml();
+  concatPubspecYaml(fileName: "tenant_pubspec");
 }
